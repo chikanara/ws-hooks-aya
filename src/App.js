@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import AddTask from "./components/AddTask/AddTask";
+import TaskList from "./components/TaskList/TaskList";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [tasks, setTasks] = useState([
+    { id: 0, todo: "Learn HTML", isDone: true },
+    { id: 1, todo: "Learn CSS", isDone: true },
+    { id: 2, todo: "Learn DEVOPS", isDone: false },
+  ]);
+
+  const deleteTask = (idTask) => {
+    setTasks(tasks.filter(task => task.id !==idTask))
+  }
+
+  const handleComplete = (idTask) => {
+    setTasks(tasks.map(task => task.id === idTask ? {...task,isDone:!task.isDone} : task))
+  }
+
+  const handleAdd = (newTask) => {
+       setTasks([...tasks,newTask])
+  }
+  
+  
+  return <div className="App">
+    <AddTask handleAdd={handleAdd}/>
+    <TaskList tasks={tasks} deleteTask={deleteTask} handleComplete={handleComplete}/>
+  </div>;
 }
 
 export default App;
